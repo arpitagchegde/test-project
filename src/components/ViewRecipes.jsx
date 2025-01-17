@@ -3,7 +3,7 @@ import { RecipeContext } from "./RecipeProvider";
 import axios from "axios";
 
 const ViewRecipes = () => {
-  const { localRecipes, setFilterCategory } = useContext(RecipeContext);
+  const { localRecipes, dispatch } = useContext(RecipeContext);
   const [externalRecipes, setExternalRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -27,6 +27,10 @@ const ViewRecipes = () => {
     fetchRecipes();
   }, []);
 
+  const handleCategoryChange = (e) => {
+    dispatch({ type: "FILTER_BY_CATEGORY", payload: e.target.value });
+  };
+
   const combinedRecipes = [...localRecipes, ...externalRecipes];
 
   return (
@@ -35,7 +39,7 @@ const ViewRecipes = () => {
 
       <div style={{ marginBottom: "20px" }}>
         <select
-          onChange={(e) => setFilterCategory(e.target.value)}
+          onChange={handleCategoryChange}
           style={{ padding: "8px" }}
         >
           <option value="">All Categories</option>
@@ -47,6 +51,9 @@ const ViewRecipes = () => {
 
       {loading && <p>Loading...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
+      {combinedRecipes.length === 0 && (
+        <p>No recipes available in this category.</p>
+      )}
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
         {combinedRecipes.map((recipe, index) => (
@@ -57,7 +64,9 @@ const ViewRecipes = () => {
               style={{ width: "100%", borderRadius: "8px" }}
             />
             <p>{recipe.name || recipe.strMeal}</p>
-            <p style={{ fontSize: "0.8em", color: "#777" }}>{recipe.category || ""}</p>
+            <p style={{ fontSize: "0.8em", color: "#777" }}>
+              {recipe.category || "External"}
+            </p>
           </div>
         ))}
       </div>
@@ -66,3 +75,4 @@ const ViewRecipes = () => {
 };
 
 export default ViewRecipes;
+

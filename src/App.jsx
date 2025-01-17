@@ -1,4 +1,3 @@
-import './App.css'
 import React from "react";
 import { RecipeProvider } from "./components/RecipeProvider";
 import AddRecipe from "./components/AddRecipe";
@@ -16,6 +15,7 @@ const App = () => {
 };
 
 export default App;
+
 
 
 

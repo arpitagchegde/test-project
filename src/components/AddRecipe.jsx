@@ -2,13 +2,13 @@ import React, { useContext, useState } from "react";
 import { RecipeContext } from "./RecipeProvider";
 
 const AddRecipe = () => {
-  const { addRecipe } = useContext(RecipeContext);
+  const { dispatch } = useContext(RecipeContext);
   const [recipe, setRecipe] = useState({ name: "", category: "" });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (recipe.name.trim() && recipe.category.trim()) {
-      addRecipe(recipe);
+      dispatch({ type: "ADD_RECIPE", payload: recipe });
       setRecipe({ name: "", category: "" });
     }
   };
@@ -38,3 +38,4 @@ const AddRecipe = () => {
 };
 
 export default AddRecipe;
+
